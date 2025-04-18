@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clara-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: clara-web
+  template:
+    metadata:
+      labels:
+        app: clara-web
+    spec:
+      containers:
+        - name: clara-web
+          image: <YOUR_ACR_NAME>.azurecr.io/clarawebapp:latest
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: clara-web-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: clara-web
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
